@@ -4,12 +4,12 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     app: {{ .Release.Name }}
-  {{- with .Values.metadata.labels }}
-    {{- toYaml .Values.metadata.labels | nindent 4 }}
-  {{- end }}
-  {{- if .Values.metadata.annotations }}
+    {{- with .Values.metadata.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.metadata.annotations }}
   annotations:
-    {{- toYaml .Values.metadata.annotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   replicas: {{ .Values.spec.replicas }}
@@ -29,7 +29,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Release.Name }}
-        image: {{ .Values.image.repository}}:{{ .Values.image.tag}}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.port }}
