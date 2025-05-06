@@ -1,0 +1,17 @@
+image:
+  repository: 290780715171.dkr.ecr.us-east-2.amazonaws.com/invoices:latest-develop
+ingress:
+  annotations:
+    app_root:
+      enabled: false
+      value: ""
+    rewrite_target:
+      enabled: false
+      value: /
+  host: invoices-dev.devkit.kaua.info
+  tls:
+    clusterIssuer: letsencrypt-prod
+    enabled: false
+port: 80
+spec:
+  replicas: 2
