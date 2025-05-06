@@ -21,14 +21,14 @@ spec:
     failureThreshold: 3
     httpGet:
       path: /api/ping
-      port: 8080
+      port: 80
     initialDelaySeconds: 30
     periodSeconds: 10
   readinessProbe:
     failureThreshold: 3
     httpGet:
       path: /api/ping
-      port: 8080
+      port: 80
     initialDelaySeconds: 10
     periodSeconds: 5
   replicas: 1
