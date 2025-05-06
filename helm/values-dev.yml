@@ -13,6 +13,20 @@ ingress:
   tls:
     clusterIssuer: letsencrypt-prod
     enabled: false
-port: 80
+port: 8080
 spec:
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /api/ping
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /api/ping
+      port: 8080
+    initialDelaySeconds: 10
+    periodSeconds: 5
   replicas: 2
