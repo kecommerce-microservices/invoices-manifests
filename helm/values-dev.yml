@@ -1,5 +1,3 @@
-env:
-  COLOR: YELLOW
 image:
   repository: 290780715171.dkr.ecr.us-east-1.amazonaws.com/invoices
   tag: latest-develop
