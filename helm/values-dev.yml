@@ -1,5 +1,5 @@
 image:
-  repository: 290780715171.dkr.ecr.us-east-2.amazonaws.com/invoices
+  repository: 290780715171.dkr.ecr.us-east-1.amazonaws.com/invoices
   tag: latest-develop
 imagePullSecrets:
   - regcred
