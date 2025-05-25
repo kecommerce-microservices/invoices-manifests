@@ -22,6 +22,7 @@ ingress:
     clusterIssuer: letsencrypt-prod
     enabled: false
 port: 8080
+replicaCount: 1
 rollout:
   enabled: true
 spec:
