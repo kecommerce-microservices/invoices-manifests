@@ -8,7 +8,7 @@ env:
 image:
   pullPolicy: Always
   repository: 290780715171.dkr.ecr.us-east-1.amazonaws.com/invoices
-  tag: latest-develop
+  tag: develop-0.1.0
 imagePullSecrets:
   - regcred
 ingress:
@@ -27,7 +27,7 @@ port: 8080
 replicaCount: 1
 rollout:
   blueGreen:
-    activeService: invoices-active
+    activeService: invoices
     autoPromotionEnabled: false
     previewService: invoices-preview
   enabled: true
