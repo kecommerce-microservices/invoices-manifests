@@ -1,6 +1,6 @@
 containerPort: 8080
 deployment:
-  enabled: true
+  enabled: false
 env:
   COLOR: YELLOW
   otel.exporter.otlp.compression: gzip
@@ -30,7 +30,7 @@ rollout:
     activeService: invoices
     autoPromotionEnabled: false
     previewService: invoices-preview
-  enabled: false
+  enabled: true
   strategy: blueGreen
 spec:
   livenessProbe:
