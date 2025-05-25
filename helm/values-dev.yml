@@ -7,7 +7,7 @@ env:
 image:
   pullPolicy: Always
   repository: 290780715171.dkr.ecr.us-east-1.amazonaws.com/invoices
-  tag: latest-main
+  tag: latest-develop
 imagePullSecrets:
   - regcred
 ingress:
