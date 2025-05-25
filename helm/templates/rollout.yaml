@@ -21,11 +21,11 @@ spec:
           ports:
             - containerPort: {{ .Values.containerPort }}
   strategy:
-    {{- if eq .Values.rollout.strategy "canary" }}
+  {{- if eq .Values.rollout.strategy "canary" }}
     canary:
       steps:
-{{ toYaml .Values.rollout.canary.steps | indent 8 }}
-    {{- else if eq .Values.rollout.strategy "blueGreen" }}
+  {{ toYaml .Values.rollout.canary.steps | indent 8 }}
+  {{- else if eq .Values.rollout.strategy "blueGreen" }}
     blueGreen:
       activeService: {{ .Values.rollout.blueGreen.activeService }}
       previewService: {{ .Values.rollout.blueGreen.previewService }}
