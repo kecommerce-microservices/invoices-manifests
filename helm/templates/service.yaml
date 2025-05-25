@@ -23,7 +23,7 @@ metadata:
 spec:
   selector:
     app: {{ .Release.Name }}
-    rollout: active
+    # rollout: active
   ports:
     - port: 80
       targetPort: {{ .Values.port }}
@@ -38,7 +38,7 @@ metadata:
 spec:
   selector:
     app: {{ .Release.Name }}
-    rollout: preview
+    # rollout: preview
   ports:
     - port: 80
       targetPort: {{ .Values.port }}
