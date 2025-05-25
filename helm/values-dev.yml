@@ -28,7 +28,7 @@ replicaCount: 1
 rollout:
   blueGreen:
     activeService: invoices-active
-    autoPromotionEnabled: true
+    autoPromotionEnabled: false
     previewService: invoices-preview
   enabled: true
   strategy: blueGreen
