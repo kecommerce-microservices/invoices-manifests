@@ -19,7 +19,7 @@ kind: Service
 metadata:
   name: {{ .Values.rollout.blueGreen.activeService }}
   labels:
-    app: {{ .Release.Name }}
+    app: invoices
 spec:
   selector:
     app: {{ .Release.Name }}
@@ -34,7 +34,7 @@ kind: Service
 metadata:
   name: {{ .Values.rollout.blueGreen.previewService }}
   labels:
-    app: {{ .Release.Name }}
+    app: invoices
 spec:
   selector:
     app: {{ .Release.Name }}
