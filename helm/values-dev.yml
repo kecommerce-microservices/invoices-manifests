@@ -1,7 +1,7 @@
 containerPort: 8080
 deployment:
   enabled: true
-  strategy: recreate
+  strategy: Recreate
 env:
   otel.exporter.otlp.compression: gzip
   otel.exporter.otlp.endpoint: http://localhost:4318
@@ -24,7 +24,6 @@ ingress:
     clusterIssuer: letsencrypt-prod
     enabled: false
 port: 8080
-replicaCount: 1
 rollout:
   blueGreen:
     activeService: invoices
