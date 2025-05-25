@@ -42,15 +42,3 @@ spec:
     initialDelaySeconds: 10
     periodSeconds: 5
   replicas: 1
-  strategy:
-    canary:
-      steps:
-        - setWeight: 20
-        - pause:
-            duration: 10s
-        - setWeight: 50
-        - pause:
-            duration: 1m
-        - setWeight: 100
-        - pause:
-            duration: 1m
