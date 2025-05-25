@@ -1,6 +1,7 @@
 containerPort: 8080
 deployment:
-  enabled: false
+  enabled: true
+  strategy: recreate
 env:
   otel.exporter.otlp.compression: gzip
   otel.exporter.otlp.endpoint: http://localhost:4318
@@ -29,7 +30,7 @@ rollout:
     activeService: invoices
     autoPromotionEnabled: true
     previewService: invoices-preview
-  enabled: true
+  enabled: false
   strategy: blueGreen
 spec:
   livenessProbe:
