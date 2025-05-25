@@ -27,7 +27,7 @@ port: 8080
 replicaCount: 1
 rollout:
   blueGreen:
-    activeService: invoices-dev
+    activeService: invoices-active
     autoPromotionEnabled: true
     previewService: invoices-preview
   enabled: true
