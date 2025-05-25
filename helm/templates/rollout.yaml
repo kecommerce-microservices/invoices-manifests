@@ -20,16 +20,17 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: {{ .Values.containerPort }}
-{{- if or (eq .Values.rollout.strategy "canary") (eq .Values.rollout.strategy "blueGreen") }}
+  {{- if or (eq .Values.rollout.strategy "canary") (eq .Values.rollout.strategy "blueGreen") }}
   strategy:
-{{- if eq .Values.rollout.strategy "canary" }}
+    {{- if eq .Values.rollout.strategy "canary" }}
     canary:
       steps:
-{{ toYaml .Values.rollout.canary.steps | indent 8 }}
-{{- else if eq .Values.rollout.strategy "blueGreen" }}
+{{ toYaml .Values.rollout.canary.steps | indent 6 }}
+    {{- else if eq .Values.rollout.strategy "blueGreen" }}
     blueGreen:
       activeService: {{ .Values.rollout.blueGreen.activeService }}
       previewService: {{ .Values.rollout.blueGreen.previewService }}
       autoPromotionEnabled: {{ .Values.rollout.blueGreen.autoPromotionEnabled }}
-{{- end }}
+    {{- end }}
+  {{- end }}
 {{- end }}
