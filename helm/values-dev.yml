@@ -26,6 +26,7 @@ port: 8080
 replicaCount: 1
 rollout:
   enabled: true
+  strategy: blueGreen
 spec:
   livenessProbe:
     failureThreshold: 3
