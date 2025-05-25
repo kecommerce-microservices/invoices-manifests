@@ -2,7 +2,6 @@ containerPort: 8080
 deployment:
   enabled: false
 env:
-  COLOR: YELLOW
   otel.exporter.otlp.compression: gzip
   otel.exporter.otlp.endpoint: http://localhost:4318
 image:
