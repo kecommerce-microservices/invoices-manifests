@@ -31,9 +31,9 @@ spec:
   {{- if eq .Values.rollout.strategy "canary" }}
     canary:
       steps:
-  {{- range .Values.rollout.canary.steps }}
-  {{ toYaml . | indent 6 }}
-  {{- end }}
+      {{- range .Values.rollout.canary.steps }}
+      {{ toYaml . | indent 8 }}
+      {{- end }}
   {{- else if eq .Values.rollout.strategy "blueGreen" }}
     blueGreen:
       activeService: {{ .Values.rollout.blueGreen.activeService }}
