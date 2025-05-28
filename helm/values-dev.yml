@@ -1,7 +1,6 @@
 deployment:
   enabled: false
 env:
-  color: yellow
   otel.exporter.otlp.compression: gzip
   otel.exporter.otlp.endpoint: http://localhost:4318
   spring.datasource.password: password
