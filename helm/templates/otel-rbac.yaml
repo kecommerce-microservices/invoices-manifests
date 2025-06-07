@@ -7,6 +7,8 @@ rules:
     resources:
       - pods
       - namespaces
+      - nodes          # adiciona permissão para nodes
+      - nodes/stats    # adiciona permissão para nodes/stats (subresource)
     verbs:
       - get
       - watch
