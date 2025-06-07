@@ -3,7 +3,6 @@ deployment:
 env:
   application.name: invoices
   application.otel.memory-exporter: false
-  color: yellow
   management.metrics.export.otlp.enabled: true
   management.tolp.metrics.export.step: 15s
   management.tracing.enabled: true
