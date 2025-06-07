@@ -21,8 +21,8 @@ spec:
           image: otel/opentelemetry-collector-contrib:latest
           args: ["--config", "/etc/otel/otel-collector-config.yaml"]
           env:
-           - name: KUBELET_HOST
-             valueFrom:
+            - name: KUBELET_HOST
+              valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: ES_ENDPOINT
