@@ -43,6 +43,8 @@ data:
 
     processors:
       k8sattributes:
+        filter:
+          namespace: ${env:NAMESPACE}
         auth_type: "serviceAccount"
         passthrough: false
         extract:
@@ -102,7 +104,7 @@ data:
           processors: [k8sattributes, resource]
           exporters: [otlphttp/newrelic]
         metrics:
-          receivers: [otlp, kubeletstats]
+          receivers: [otlp]
           processors: [memory_limiter, k8sattributes, batch]
           exporters: [datadog]
         logs:
