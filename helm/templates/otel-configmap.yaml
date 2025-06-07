@@ -6,15 +6,15 @@ metadata:
 data:
   otel-collector-config.yaml: |
     receivers:
-      kubeletstats:
-        collection_interval: 10s
-        auth_type: serviceAccount
-        endpoint: https://${KUBELET_HOST}:10250
-        insecure_skip_verify: true
-        metric_groups:
-          - container
-          - pod
-          # - node
+      # kubeletstats:
+      #   collection_interval: 10s
+      #   auth_type: serviceAccount
+      #   endpoint: https://${KUBELET_HOST}:10250
+      #   insecure_skip_verify: true
+      #   metric_groups:
+      #     - container
+      #     - pod
+      #     # - node
       otlp:
         protocols:
           grpc:
@@ -104,7 +104,7 @@ data:
           processors: [k8sattributes, resource]
           exporters: [otlphttp/newrelic]
         metrics:
-          receivers: [otlp,kubeletstats]
+          receivers: [otlp]
           processors: [memory_limiter, k8sattributes, batch]
           exporters: [datadog]
         logs:
