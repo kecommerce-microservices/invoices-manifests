@@ -23,10 +23,10 @@ spec:
           env:
             - name: NAMESPACE
               value: {{ .Values.namespace }}
-            - name: KUBELET_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
+            # - name: KUBELET_HOST
+            #   valueFrom:
+            #     fieldRef:
+            #       fieldPath: status.hostIP
             - name: ES_ENDPOINT
               value: {{ .Values.otel.elasticsearch.endpoint }}
             - name: ES_API_KEY
