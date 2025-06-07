@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Values.otel.name }}-otel
 spec:
-  replicas: {{ .Values.otel.replicas }}
+  #replicas: {{ .Values.otel.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.otel.name }}-otel
