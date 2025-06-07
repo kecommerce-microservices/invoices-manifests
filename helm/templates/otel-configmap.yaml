@@ -98,14 +98,14 @@ data:
       extensions: [health_check]
       pipelines:
         traces:
-          receivers: [otlp]
+          receivers: [otlp, kubeletstats]
           processors: [k8sattributes, resource]
           exporters: [otlphttp/newrelic]
         metrics:
-          receivers: [otlp]
+          receivers: [otlp, kubeletstats]
           processors: [memory_limiter, k8sattributes, batch]
           exporters: [datadog]
         logs:
-          receivers: [otlp]
+          receivers: [otlp, kubeletstats]
           processors: [transform/logs, k8sattributes, resource]
           exporters: [elasticsearch]
