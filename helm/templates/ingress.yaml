@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.host }}
+    traefik.ingress.kubernetes.io/router.entrypoints: {{ ternary "websecure" "web" .Values.ingress.tls.enabled }}
+    {{- if .Values.ingress.tls.enabled }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.clusterIssuer }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Release.Name }}-tls
+  {{- end }}
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.serviceName }}
+                # name: {{ if and .Values.rollout.enabled (eq .Values.rollout.strategy "blueGreen") }}{{ .Values.rollout.blueGreen.activeService }}{{ else }}{{ .Release.Name }}{{ end }}
+                port:
+                  number: 80

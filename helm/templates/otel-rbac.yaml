@@ -1,0 +1,91 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Values.otel.rbac.clusterRoleName }}
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+      - namespaces
+      - nodes          # adiciona permissão para nodes
+      - nodes/stats    # adiciona permissão para nodes/stats (subresource)
+    verbs:
+      - get
+      - watch
+      - list
+  - apiGroups: ["apps"]
+    resources:
+      - replicasets
+      - deployments
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups: ["extensions"]
+    resources:
+      - replicasets
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.otel.rbac.serviceAccountName }}
+  namespace: {{ .Values.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.otel.rbac.clusterRoleBindingName }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Values.otel.rbac.clusterRoleName }}
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.otel.rbac.serviceAccountName }}
+    namespace: {{ .Values.namespace }}
+
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: {{ .Values.otel.rbac.serviceAccountName }}
+#   namespace: {{ .Values.namespace }}
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: Role
+# metadata:
+#   name: {{ .Values.otel.rbac.roleName }}
+#   namespace: {{ .Values.namespace }}
+# rules:
+#   - apiGroups: [""]
+#     resources:
+#       - pods
+#     verbs:
+#       - get
+#       - watch
+#       - list
+#   - apiGroups: ["apps"]
+#     resources:
+#       - replicasets
+#       - deployments
+#     verbs:
+#       - get
+#       - list
+#       - watch
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: {{ .Values.otel.rbac.roleBindingName }}
+#   namespace: {{ .Values.namespace }}
+# subjects:
+#   - kind: ServiceAccount
+#     name: {{ .Values.otel.rbac.serviceAccountName }}
+#     namespace: {{ .Values.namespace }}
+# roleRef:
+#   kind: Role
+#   name: {{ .Values.otel.rbac.roleName }}
+#   apiGroup: rbac.authorization.k8s.io

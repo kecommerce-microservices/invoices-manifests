@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.jaeger.name }}-jaeger-collector
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.jaeger.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.jaeger.name }}-jaeger-collector
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.jaeger.name }}-jaeger-collector
+    spec:
+      containers:
+        - name: {{ .Values.jaeger.name }}-jaeger-collector
+          image: jaegertracing/jaeger-collector:latest
+          env:
+            - name: SPAN_STORAGE_TYPE
+              value: {{ .Values.jaeger.storage.type }}
+            - name: ES_SERVER_URLS
+              value: {{ .Values.jaeger.storage.url }}
+            - name: ES_INDEX_PREFIX
+              value: {{ .Values.jaeger.storage.indexPrefix }}
+            - name: ES_HEALTH_CHECK_TIMEOUT
+              value: 2m
+            - name: ES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.jaeger.storage.secretName }}
+                  key: username
+            - name: ES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.jaeger.storage.secretName }}
+                  key: password
+          ports:
+            - containerPort: 4317 # OTLP gRPC
+            - containerPort: 4318 # OTLP HTTP
+            - containerPort: 14250 # jaeger gRPC

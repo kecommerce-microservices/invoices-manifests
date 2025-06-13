@@ -1,0 +1,71 @@
+objects:
+  secret:
+    enabled: false
+  ingress:
+    enabled: true
+
+metadata:
+  annotations: {}
+  labels: {}
+
+template:
+  metadata:
+  annotations: {}
+
+imagePullSecrets: {}
+
+volumes: {}
+
+container: {}
+
+readinessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 120
+  periodSeconds: 10
+  failureThreshold: 8
+
+livenessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 120
+  timeoutSeconds: 1
+
+port: 8080
+
+service:
+  annotations:
+  spec:
+    type: ClusterIP
+    ports:
+      - port: 80
+        targetPort: 8080
+
+image:
+  imagePullPolicy: Always
+
+spec:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 0.5
+      memory: 400Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+
+deployment:
+  enabled: true
+  strategy: RollingUpdate
+
+rollout:
+  enabled: false
+  strategy: canary
+  canary:
+    steps:
+      - setWeight: 10
+      - pause: { duration: "30s" }
+      - setWeight: 50
+      - pause: { duration: "30s" }
+  blueGreen:
+    autoPromotionEnabled: false

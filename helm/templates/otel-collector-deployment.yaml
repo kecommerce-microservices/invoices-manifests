@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.otel.name }}-otel
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.otel.name }}-otel
+spec:
+  replicas: {{ .Values.otel.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.otel.name }}-otel
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.otel.name }}-otel
+    spec:
+      serviceAccountName: {{ .Values.otel.rbac.serviceAccountName }}
+      containers:
+        - name: {{ .Values.otel.name }}-otel
+          image: otel/opentelemetry-collector-contrib:latest
+          args: ["--config", "/etc/otel/otel-collector-config.yaml"]
+          env:
+            - name: NAMESPACE
+              value: {{ .Values.namespace }}
+            - name: KUBELET_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: ES_ENDPOINT
+              value: {{ .Values.otel.elasticsearch.endpoint }}
+            - name: ES_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.otel.elasticsearch.secretName }}
+                  key: apiKey
+            - name: DATADOG_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.otel.datadog.secretName }}
+                  key: apiKey
+            - name: DATADOG_ENDPOINT
+              value: {{ .Values.otel.datadog.endpoint }}
+            - name: JAEGER_ENDPOINT
+              value: {{ .Values.otel.jaeger.endpoint }}
+          ports:
+            - containerPort: 4317
+            - containerPort: 4318
+            - containerPort: 13133
+          volumeMounts:
+            - name: otel-collector-config
+              mountPath: /etc/otel
+              readOnly: true
+      volumes:
+        - name: otel-collector-config
+          configMap:
+            name: {{ .Values.otel.name }}-otel-config

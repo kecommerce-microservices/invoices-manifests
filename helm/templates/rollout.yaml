@@ -1,0 +1,60 @@
+{{- if .Values.rollout.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Release.Name }}
+  {{- with .Values.metadata.labels }}
+    {{- toYaml .Values.metadata.labels | nindent 4 }}
+  {{- end }}
+  {{- if .Values.metadata.annotations }}
+  annotations:
+    {{- toYaml .Values.metadata.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  # replicas: {{ .Values.spec.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+      {{- if and .Values.template.metadata .Values.template.metadata.annotations }}
+      annotations:
+        {{- toYaml .Values.template.metadata.annotations | nindent 4 }}
+      {{- end }}
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets }}
+      - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ .Release.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.port }}
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+  strategy:
+  {{- if eq .Values.rollout.strategy "canary" }}
+    canary:
+      steps:
+{{- range .Values.rollout.canary.steps }}
+        - {{ toYaml . | nindent 10 }}
+{{- end }}
+  {{- else if eq .Values.rollout.strategy "blueGreen" }}
+    blueGreen:
+      activeService: {{ .Values.rollout.blueGreen.activeService }}
+      previewService: {{ .Values.rollout.blueGreen.previewService }}
+      autoPromotionEnabled: {{ .Values.rollout.blueGreen.autoPromotionEnabled }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,25 @@
+{{- if .Values.scaledObject.enabled }}
+apiVersion: http.keda.sh/v1alpha1
+kind: HTTPScaledObject
+metadata:
+  name: {{ .Values.scaledObject.name }}-scaledObject
+  namespace: {{ .Values.namespace }}
+spec:
+  host: {{ .Values.ingress.host }}
+  scalingMetric: # requestRate and concurrency are mutually exclusive
+        requestRate:
+            granularity: 1s
+            targetValue: 100
+            window: 1m
+        concurrency:
+            targetValue: 100
+  scaledownPeriod: {{ .Values.scaledObject.scaledownPeriod }}
+  replicas:
+    min: {{ .Values.scaledObject.minReplicas }}
+    max: {{ .Values.scaledObject.maxReplicas }}
+  scaleTargetRef:
+    deployment: {{ .Values.scaledObject.name }}
+    service: {{ .Values.scaledObject.name }}
+    port: {{ .Values.scaledObject.targetPort }}
+  targetPendingRequests: 1
+{{- end }}
